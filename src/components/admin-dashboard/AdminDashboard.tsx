@@ -84,8 +84,7 @@ const formatPromotionExpiry = (expires: string) =>
         year: "numeric",
       })
 
-const MAX_PRODUCT_IMAGE_BYTES = 200_000
-const MAX_PRODUCT_IMAGE_UPLOAD_BYTES = 20 * 1024 * 1024
+const PRODUCT_IMAGE_TARGET_BYTES = 200_000
 
 const compressProductImage = (file: File): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -104,6 +103,7 @@ const compressProductImage = (file: File): Promise<string> =>
         1,
         1200 / Math.max(image.width, image.height),
       )
+      let bestEffortBlob: Blob | null = null
       for (let attempt = 0; attempt < 10; attempt += 1) {
         const scale = initialScale * Math.pow(0.82, Math.floor(attempt / 3))
         canvas.width = Math.max(1, Math.round(image.width * scale))
@@ -118,24 +118,27 @@ const compressProductImage = (file: File): Promise<string> =>
           reject(new Error("The selected photo could not be processed."))
           return
         }
-        if (blob.size <= MAX_PRODUCT_IMAGE_BYTES) {
-          const reader = new FileReader()
-          reader.onload = () => resolve(String(reader.result))
-          reader.onerror = () =>
-            reject(
-              reader.error ||
-                new Error("The processed photo could not be read."),
-            )
-          reader.readAsDataURL(blob)
-          return
+        if (!bestEffortBlob || blob.size < bestEffortBlob.size) {
+          bestEffortBlob = blob
+        }
+        if (blob.size <= PRODUCT_IMAGE_TARGET_BYTES) {
+          bestEffortBlob = blob
+          break
         }
       }
 
-      reject(
-        new Error(
-          "This photo could not be compressed enough. Choose a smaller image.",
-        ),
-      )
+      if (!bestEffortBlob) {
+        reject(new Error("The selected photo could not be processed."))
+        return
+      }
+
+      const reader = new FileReader()
+      reader.onload = () => resolve(String(reader.result))
+      reader.onerror = () =>
+        reject(
+          reader.error || new Error("The processed photo could not be read."),
+        )
+      reader.readAsDataURL(bestEffortBlob)
     }
     image.onerror = () => {
       URL.revokeObjectURL(imageUrl)
@@ -454,10 +457,6 @@ export default function AdminDashboard({ onViewChange, authError }: Props) {
     if (!file) return
     if (!["image/png", "image/jpeg", "image/webp"].includes(file.type)) {
       setAddError("Choose a PNG, JPG, or WebP image.")
-      return
-    }
-    if (file.size > MAX_PRODUCT_IMAGE_UPLOAD_BYTES) {
-      setAddError("Choose an image smaller than 20 MB.")
       return
     }
     setIsProcessingProductImage(true)
