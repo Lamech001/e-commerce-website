@@ -56,8 +56,8 @@ const EMPTY_PRODUCT_DRAFT: ProductDraft = {
   price: "",
   originalPrice: "",
   stock: "",
-  rating: "0",
-  reviews: "0",
+  rating: "",
+  reviews: "",
   colors: "Blue",
   sizes: "One Size",
   badge: "",
@@ -274,12 +274,11 @@ export default function AdminDashboard({ onViewChange, authError }: Props) {
     if (isProcessingProductImage) return
     if (
       !newProd.name.trim() ||
-      !newProd.brand.trim() ||
       !newProd.price ||
       (!editingProductId && !newProdImage)
     ) {
       setAddError(
-        "Add a product name, brand, price, and photo before publishing.",
+        "Add a product name, price, and photo before publishing.",
       )
       return
     }
@@ -288,8 +287,8 @@ export default function AdminDashboard({ onViewChange, authError }: Props) {
       ? Number(newProd.originalPrice)
       : null
     const stock = newProd.stock.trim() ? Number(newProd.stock) : 0
-    const rating = Number(newProd.rating)
-    const reviews = Number(newProd.reviews)
+    const rating = newProd.rating.trim() ? Number(newProd.rating) : 0
+    const reviews = newProd.reviews.trim() ? Number(newProd.reviews) : 0
     const colors = newProd.colors
       .split(",")
       .map((color) => color.trim())
@@ -1130,8 +1129,12 @@ export default function AdminDashboard({ onViewChange, authError }: Props) {
                         label: "Product Name",
                         ph: "e.g. Silk Midi Dress",
                       },
-                      { key: "brand", label: "Brand", ph: "e.g. Arket" },
-                      { key: "sku", label: "SKU", ph: "ARK-SMD-BLK" },
+                      {
+                        key: "brand",
+                        label: "(Optional) Brand",
+                        ph: "e.g. Arket",
+                      },
+                      { key: "sku", label: "(Optional) SKU", ph: "ARK-SMD-BLK" },
                       { key: "price", label: "Price (KSh)", ph: "0.00" },
                       {
                         key: "originalPrice",
@@ -1139,8 +1142,16 @@ export default function AdminDashboard({ onViewChange, authError }: Props) {
                         ph: "0.00",
                       },
                       { key: "stock", label: "Stock", ph: "0" },
-                      { key: "rating", label: "Rating (0–5)", ph: "0" },
-                      { key: "reviews", label: "Review Count", ph: "0" },
+                      {
+                        key: "rating",
+                        label: "(Optional) Rating (0–5)",
+                        ph: "0",
+                      },
+                      {
+                        key: "reviews",
+                        label: "(Optional) Review Count",
+                        ph: "0",
+                      },
                       {
                         key: "colors",
                         label: "Colors (comma-separated)",
