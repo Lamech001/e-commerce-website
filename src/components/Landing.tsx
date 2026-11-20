@@ -1241,11 +1241,6 @@ export default function Landing({ onViewChange }: LandingProps) {
               >
                 {activeCatLabel}
               </h2>
-              <p style={{ fontSize: 12.5, color: "#94a3b8", margin: 0 }}>
-                {isLoadingProducts
-                  ? "Loading styles..."
-                  : `${filtered.length} styles`}
-              </p>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <select
