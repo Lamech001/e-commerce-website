@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 import {
   Package,
   Plus,
@@ -277,9 +277,7 @@ export default function AdminDashboard({ onViewChange, authError }: Props) {
       !newProd.price ||
       (!editingProductId && !newProdImage)
     ) {
-      setAddError(
-        "Add a product name, price, and photo before publishing.",
-      )
+      setAddError("Add a product name, price, and photo before publishing.")
       return
     }
     const price = Number(newProd.price)
@@ -1075,7 +1073,7 @@ export default function AdminDashboard({ onViewChange, authError }: Props) {
                 </button>
               </div>
 
-              {showAdd && (
+              {showAdd && editingProductId === null && (
                 <div
                   style={{
                     background: "#fff",
@@ -1101,7 +1099,7 @@ export default function AdminDashboard({ onViewChange, authError }: Props) {
                         margin: 0,
                       }}
                     >
-                      {editingProductId ? "Edit Product" : "New Product"}
+                      New Product
                     </h3>
                     <button
                       onClick={resetProductForm}
@@ -1134,7 +1132,11 @@ export default function AdminDashboard({ onViewChange, authError }: Props) {
                         label: "(Optional) Brand",
                         ph: "e.g. Arket",
                       },
-                      { key: "sku", label: "(Optional) SKU", ph: "ARK-SMD-BLK" },
+                      {
+                        key: "sku",
+                        label: "(Optional) SKU",
+                        ph: "ARK-SMD-BLK",
+                      },
                       { key: "price", label: "Price (KSh)", ph: "0.00" },
                       {
                         key: "originalPrice",
@@ -1463,9 +1465,7 @@ export default function AdminDashboard({ onViewChange, authError }: Props) {
                   >
                     {isProcessingProductImage
                       ? "Processing photo…"
-                      : editingProductId
-                        ? "Save Changes"
-                        : "Add Product"}
+                      : "Add Product"}
                   </button>
                 </div>
               )}
@@ -1517,216 +1517,592 @@ export default function AdminDashboard({ onViewChange, authError }: Props) {
                     {filtProd.map((p) => {
                       const inv = getInventoryStatus(p.stock)
                       return (
-                        <tr
-                          key={p.id}
-                          onMouseEnter={(e) =>
-                            (e.currentTarget.style.background = "#f8fafc")
-                          }
-                          onMouseLeave={(e) =>
-                            (e.currentTarget.style.background = "transparent")
-                          }
-                          style={{
-                            borderBottom: "1px solid #f1f5f9",
-                            transition: "background 0.15s",
-                          }}
-                        >
-                          <td
+                        <Fragment key={p.id}>
+                          <tr
+                            onMouseEnter={(e) =>
+                              (e.currentTarget.style.background = "#f8fafc")
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.style.background = "transparent")
+                            }
                             style={{
-                              padding: "11px 14px",
-                              fontSize: 13.5,
-                              fontWeight: 700,
-                              color: DARK,
+                              borderBottom: "1px solid #f1f5f9",
+                              transition: "background 0.15s",
                             }}
                           >
-                            <div
+                            <td
                               style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 10,
-                                minWidth: 180,
+                                padding: "11px 14px",
+                                fontSize: 13.5,
+                                fontWeight: 700,
+                                color: DARK,
                               }}
                             >
                               <div
                                 style={{
-                                  width: 36,
-                                  height: 42,
-                                  borderRadius: 6,
-                                  overflow: "hidden",
-                                  background: "#f1f5f9",
                                   display: "flex",
                                   alignItems: "center",
-                                  justifyContent: "center",
-                                  flexShrink: 0,
+                                  gap: 10,
+                                  minWidth: 180,
                                 }}
                               >
-                                {p.image ? (
-                                  <img
-                                    src={p.image}
-                                    alt=""
-                                    style={{
-                                      width: "100%",
-                                      height: "100%",
-                                      objectFit: "cover",
-                                    }}
-                                  />
-                                ) : (
-                                  <Package size={14} color="#94a3b8" />
-                                )}
+                                <div
+                                  style={{
+                                    width: 36,
+                                    height: 42,
+                                    borderRadius: 6,
+                                    overflow: "hidden",
+                                    background: "#f1f5f9",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    flexShrink: 0,
+                                  }}
+                                >
+                                  {p.image ? (
+                                    <img
+                                      src={p.image}
+                                      alt=""
+                                      style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "cover",
+                                      }}
+                                    />
+                                  ) : (
+                                    <Package size={14} color="#94a3b8" />
+                                  )}
+                                </div>
+                                {p.name}
                               </div>
-                              {p.name}
-                            </div>
-                          </td>
-                          <td
-                            style={{
-                              padding: "11px 14px",
-                              fontSize: 13,
-                              color: "#64748b",
-                            }}
-                          >
-                            {p.brand}
-                          </td>
-                          <td
-                            style={{
-                              padding: "11px 14px",
-                              fontFamily: "JetBrains Mono, monospace",
-                              fontSize: 11.5,
-                              color: "#94a3b8",
-                            }}
-                          >
-                            {p.sku}
-                          </td>
-                          <td
-                            style={{
-                              padding: "11px 14px",
-                              fontSize: 13,
-                              color: "#64748b",
-                            }}
-                          >
-                            {p.type}
-                          </td>
-                          <td
-                            style={{
-                              padding: "11px 14px",
-                              fontSize: 13,
-                              color: "#64748b",
-                            }}
-                          >
-                            {p.gender}
-                          </td>
-                          <td
-                            style={{
-                              padding: "11px 14px",
-                              fontFamily: "JetBrains Mono, monospace",
-                              fontSize: 13.5,
-                              fontWeight: 800,
-                            }}
-                          >
-                            KSh{p.price.toFixed(2)}
-                          </td>
-                          <td
-                            style={{
-                              padding: "11px 14px",
-                              fontFamily: "JetBrains Mono, monospace",
-                              fontSize: 13.5,
-                            }}
-                          >
-                            {p.stock}
-                          </td>
-                          <td style={{ padding: "11px 14px" }}>
-                            <span
+                            </td>
+                            <td
                               style={{
-                                fontSize: 11.5,
-                                fontWeight: 800,
-                                color: inv.color,
-                                background: inv.bg,
-                                padding: "3px 10px",
-                                borderRadius: 10,
+                                padding: "11px 14px",
+                                fontSize: 13,
+                                color: "#64748b",
                               }}
                             >
-                              {inv.label}
-                            </span>
-                          </td>
-                          <td style={{ padding: "11px 14px" }}>
-                            <span
+                              {p.brand}
+                            </td>
+                            <td
                               style={{
+                                padding: "11px 14px",
+                                fontFamily: "JetBrains Mono, monospace",
                                 fontSize: 11.5,
-                                fontWeight: 800,
-                                color: p.isActive ? "#15803d" : "#64748b",
-                                background: p.isActive ? "#dcfce7" : "#f1f5f9",
-                                padding: "3px 10px",
-                                borderRadius: 10,
+                                color: "#94a3b8",
                               }}
                             >
-                              {p.isActive ? "Visible" : "Hidden"}
-                            </span>
-                          </td>
-                          <td
-                            style={{
-                              padding: "11px 14px",
-                              fontFamily: "JetBrains Mono, monospace",
-                              fontSize: 13,
-                            }}
-                          >
-                            {p.sales.toLocaleString()}
-                          </td>
-                          <td style={{ padding: "11px 14px" }}>
-                            <div style={{ display: "flex", gap: 6 }}>
-                              <button
-                                onClick={() => openProductForm(p)}
-                                aria-label={`Edit ${p.name}`}
+                              {p.sku}
+                            </td>
+                            <td
+                              style={{
+                                padding: "11px 14px",
+                                fontSize: 13,
+                                color: "#64748b",
+                              }}
+                            >
+                              {p.type}
+                            </td>
+                            <td
+                              style={{
+                                padding: "11px 14px",
+                                fontSize: 13,
+                                color: "#64748b",
+                              }}
+                            >
+                              {p.gender}
+                            </td>
+                            <td
+                              style={{
+                                padding: "11px 14px",
+                                fontFamily: "JetBrains Mono, monospace",
+                                fontSize: 13.5,
+                                fontWeight: 800,
+                              }}
+                            >
+                              KSh{p.price.toFixed(2)}
+                            </td>
+                            <td
+                              style={{
+                                padding: "11px 14px",
+                                fontFamily: "JetBrains Mono, monospace",
+                                fontSize: 13.5,
+                              }}
+                            >
+                              {p.stock}
+                            </td>
+                            <td style={{ padding: "11px 14px" }}>
+                              <span
                                 style={{
-                                  width: 30,
-                                  height: 30,
-                                  background: "#dbeafe",
-                                  border: "none",
-                                  borderRadius: 6,
-                                  cursor: "pointer",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
+                                  fontSize: 11.5,
+                                  fontWeight: 800,
+                                  color: inv.color,
+                                  background: inv.bg,
+                                  padding: "3px 10px",
+                                  borderRadius: 10,
                                 }}
                               >
-                                <Edit2 size={13} color={ACCENT} />
-                              </button>
-                              <button
-                                onClick={() =>
-                                  p.isActive
-                                    ? void deleteProd(p.id)
-                                    : void restoreProd(p.id)
-                                }
-                                aria-label={
-                                  p.isActive
-                                    ? `Hide ${p.name} from storefront`
-                                    : `Restore ${p.name} to storefront`
-                                }
-                                title={
-                                  p.isActive
-                                    ? "Hide product"
-                                    : "Restore product"
-                                }
+                                {inv.label}
+                              </span>
+                            </td>
+                            <td style={{ padding: "11px 14px" }}>
+                              <span
                                 style={{
-                                  width: 30,
-                                  height: 30,
+                                  fontSize: 11.5,
+                                  fontWeight: 800,
+                                  color: p.isActive ? "#15803d" : "#64748b",
                                   background: p.isActive
-                                    ? "#fee2e2"
-                                    : "#dcfce7",
-                                  border: "none",
-                                  borderRadius: 6,
-                                  cursor: "pointer",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
+                                    ? "#dcfce7"
+                                    : "#f1f5f9",
+                                  padding: "3px 10px",
+                                  borderRadius: 10,
                                 }}
                               >
-                                {p.isActive ? (
-                                  <Trash2 size={13} color="#dc2626" />
-                                ) : (
-                                  <Eye size={13} color="#15803d" />
-                                )}
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
+                                {p.isActive ? "Visible" : "Hidden"}
+                              </span>
+                            </td>
+                            <td
+                              style={{
+                                padding: "11px 14px",
+                                fontFamily: "JetBrains Mono, monospace",
+                                fontSize: 13,
+                              }}
+                            >
+                              {p.sales.toLocaleString()}
+                            </td>
+                            <td style={{ padding: "11px 14px" }}>
+                              <div style={{ display: "flex", gap: 6 }}>
+                                <button
+                                  onClick={() => openProductForm(p)}
+                                  aria-label={`Edit ${p.name}`}
+                                  style={{
+                                    width: 30,
+                                    height: 30,
+                                    background: "#dbeafe",
+                                    border: "none",
+                                    borderRadius: 6,
+                                    cursor: "pointer",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                  }}
+                                >
+                                  <Edit2 size={13} color={ACCENT} />
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    p.isActive
+                                      ? void deleteProd(p.id)
+                                      : void restoreProd(p.id)
+                                  }
+                                  aria-label={
+                                    p.isActive
+                                      ? `Hide ${p.name} from storefront`
+                                      : `Restore ${p.name} to storefront`
+                                  }
+                                  title={
+                                    p.isActive
+                                      ? "Hide product"
+                                      : "Restore product"
+                                  }
+                                  style={{
+                                    width: 30,
+                                    height: 30,
+                                    background: p.isActive
+                                      ? "#fee2e2"
+                                      : "#dcfce7",
+                                    border: "none",
+                                    borderRadius: 6,
+                                    cursor: "pointer",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                  }}
+                                >
+                                  {p.isActive ? (
+                                    <Trash2 size={13} color="#dc2626" />
+                                  ) : (
+                                    <Eye size={13} color="#15803d" />
+                                  )}
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                          {showAdd && editingProductId === p.id && (
+                            <tr>
+                              <td colSpan={11} style={{ padding: 0 }}>
+                                <div
+                                  style={{
+                                    padding: 20,
+                                    borderBottom: "1px solid #bfdbfe",
+                                    background: "#f8fbff",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      alignItems: "center",
+                                      marginBottom: 16,
+                                    }}
+                                  >
+                                    <h3
+                                      style={{
+                                        margin: 0,
+                                        fontSize: 15,
+                                        fontWeight: 800,
+                                        color: DARK,
+                                      }}
+                                    >
+                                      Edit {p.name}
+                                    </h3>
+                                    <button
+                                      onClick={resetProductForm}
+                                      aria-label="Close product editor"
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 6,
+                                        padding: "6px 10px",
+                                        border: "1px solid #e2e8f0",
+                                        borderRadius: 6,
+                                        background: "#fff",
+                                        cursor: "pointer",
+                                      }}
+                                    >
+                                      <X size={14} /> Close
+                                    </button>
+                                  </div>
+                                  <div
+                                    className="admin-product-form"
+                                    style={{
+                                      display: "grid",
+                                      gridTemplateColumns:
+                                        "repeat(6, minmax(0, 1fr))",
+                                      gap: 12,
+                                      marginBottom: 14,
+                                    }}
+                                  >
+                                    {([
+                                      {
+                                        key: "name",
+                                        label: "Product Name",
+                                        ph: "Product name",
+                                      },
+                                      {
+                                        key: "brand",
+                                        label: "Brand",
+                                        ph: "Brand",
+                                      },
+                                      { key: "sku", label: "SKU", ph: "SKU" },
+                                      {
+                                        key: "price",
+                                        label: "Price (KSh)",
+                                        ph: "0.00",
+                                      },
+                                      {
+                                        key: "originalPrice",
+                                        label: "Original Price",
+                                        ph: "Optional",
+                                      },
+                                      { key: "stock", label: "Stock", ph: "0" },
+                                      {
+                                        key: "rating",
+                                        label: "Rating (0–5)",
+                                        ph: "0",
+                                      },
+                                      {
+                                        key: "reviews",
+                                        label: "Review Count",
+                                        ph: "0",
+                                      },
+                                      {
+                                        key: "colors",
+                                        label: "Colors",
+                                        ph: "Comma-separated colors",
+                                      },
+                                      {
+                                        key: "sizes",
+                                        label: "Sizes",
+                                        ph: "Comma-separated sizes",
+                                      },
+                                      {
+                                        key: "badge",
+                                        label: "Badge",
+                                        ph: "Optional",
+                                      },
+                                      {
+                                        key: "badgeColor",
+                                        label: "Badge Color",
+                                        ph: "Blue",
+                                      },
+                                    ] satisfies {
+                                      key: "name" | "brand" | "sku" | "price" | "originalPrice" | "stock" | "rating" | "reviews" | "colors" | "sizes" | "badge" | "badgeColor"
+                                      label: string
+                                      ph: string
+                                    }[]).map((field) => (
+                                      <label
+                                        key={field.key}
+                                        style={{
+                                          gridColumn:
+                                            field.key === "name" ||
+                                            field.key === "colors" ||
+                                            field.key === "sizes"
+                                              ? "span 2"
+                                              : undefined,
+                                          fontSize: 11,
+                                          fontWeight: 800,
+                                          color: "#64748b",
+                                        }}
+                                      >
+                                        {field.label}
+                                        <input
+                                          value={newProd[field.key]}
+                                          onChange={(event) =>
+                                            setNewProd((draft) => ({
+                                              ...draft,
+                                              [field.key]: event.target.value,
+                                            }))
+                                          }
+                                          type={
+                                            [
+                                              "price",
+                                              "originalPrice",
+                                              "stock",
+                                              "rating",
+                                              "reviews",
+                                            ].includes(field.key)
+                                              ? "number"
+                                              : "text"
+                                          }
+                                          min={
+                                            ["price", "originalPrice"].includes(
+                                              field.key,
+                                            )
+                                              ? "0.01"
+                                              : "0"
+                                          }
+                                          step={
+                                            field.key === "rating"
+                                              ? "0.1"
+                                              : "any"
+                                          }
+                                          placeholder={field.ph}
+                                          style={{
+                                            display: "block",
+                                            width: "100%",
+                                            marginTop: 4,
+                                            padding: "8px 10px",
+                                            border: "1px solid #e2e8f0",
+                                            borderRadius: 8,
+                                            fontSize: 13,
+                                            boxSizing: "border-box",
+                                          }}
+                                        />
+                                      </label>
+                                    ))}
+                                    <label
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: 800,
+                                        color: "#64748b",
+                                      }}
+                                    >
+                                      Type
+                                      <select
+                                        value={newProd.type}
+                                        onChange={(event) =>
+                                          setNewProd((draft) => ({
+                                            ...draft,
+                                            type: event.target
+                                              .value as ProductDraft["type"],
+                                          }))
+                                        }
+                                        style={{
+                                          display: "block",
+                                          width: "100%",
+                                          marginTop: 4,
+                                          padding: "8px 10px",
+                                          border: "1px solid #e2e8f0",
+                                          borderRadius: 8,
+                                          background: "#fff",
+                                        }}
+                                      >
+                                        {[
+                                          "Clothing",
+                                          "Shoes",
+                                          "Bags",
+                                          "Accessories",
+                                        ].map((type) => (
+                                          <option key={type}>{type}</option>
+                                        ))}
+                                      </select>
+                                    </label>
+                                    <label
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: 800,
+                                        color: "#64748b",
+                                      }}
+                                    >
+                                      Gender
+                                      <select
+                                        value={newProd.gender}
+                                        onChange={(event) =>
+                                          setNewProd((draft) => ({
+                                            ...draft,
+                                            gender: event.target
+                                              .value as ProductDraft["gender"],
+                                          }))
+                                        }
+                                        style={{
+                                          display: "block",
+                                          width: "100%",
+                                          marginTop: 4,
+                                          padding: "8px 10px",
+                                          border: "1px solid #e2e8f0",
+                                          borderRadius: 8,
+                                          background: "#fff",
+                                        }}
+                                      >
+                                        {["Men", "Women", "Kids", "Unisex"].map(
+                                          (gender) => (
+                                            <option key={gender}>
+                                              {gender}
+                                            </option>
+                                          ),
+                                        )}
+                                      </select>
+                                    </label>
+                                    {([
+                                      ["isNew", "Show in New Arrivals"],
+                                      ["isSale", "Show in Sale"],
+                                    ] as const).map(([key, label]) => (
+                                      <label
+                                        key={key}
+                                        style={{
+                                          display: "flex",
+                                          alignItems: "center",
+                                          gap: 8,
+                                          color: "#475569",
+                                          fontSize: 12,
+                                          fontWeight: 700,
+                                        }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={newProd[key]}
+                                          onChange={(event) =>
+                                            setNewProd((draft) => ({
+                                              ...draft,
+                                              [key]: event.target.checked,
+                                            }))
+                                          }
+                                        />
+                                        {label}
+                                      </label>
+                                    ))}
+                                  </div>
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      gap: 12,
+                                      marginBottom: 14,
+                                    }}
+                                  >
+                                    {newProdImage && (
+                                      <img
+                                        src={newProdImage}
+                                        alt="Product preview"
+                                        style={{
+                                          width: 56,
+                                          height: 56,
+                                          objectFit: "cover",
+                                          borderRadius: 8,
+                                        }}
+                                      />
+                                    )}
+                                    <label
+                                      htmlFor="edit-product-photo"
+                                      style={{
+                                        padding: "8px 12px",
+                                        border: "1px solid #cbd5e1",
+                                        borderRadius: 8,
+                                        background: "#fff",
+                                        cursor: "pointer",
+                                        fontSize: 12.5,
+                                        fontWeight: 700,
+                                      }}
+                                    >
+                                      {newProdImage
+                                        ? "Change product photo"
+                                        : "Choose product photo"}
+                                    </label>
+                                    <input
+                                      id="edit-product-photo"
+                                      type="file"
+                                      accept="image/png,image/jpeg,image/webp"
+                                      disabled={isProcessingProductImage}
+                                      onChange={handleProductImageChange}
+                                      style={{
+                                        position: "absolute",
+                                        width: 1,
+                                        height: 1,
+                                        opacity: 0,
+                                        pointerEvents: "none",
+                                      }}
+                                    />
+                                    <span
+                                      style={{ fontSize: 12, color: "#64748b" }}
+                                    >
+                                      {isProcessingProductImage
+                                        ? "Optimizing photo…"
+                                        : newProdImageName ||
+                                          "PNG, JPG or WebP"}
+                                    </span>
+                                  </div>
+                                  {addError && (
+                                    <p
+                                      role="alert"
+                                      style={{
+                                        margin: "0 0 12px",
+                                        color: "#dc2626",
+                                        fontSize: 12.5,
+                                        fontWeight: 700,
+                                      }}
+                                    >
+                                      {addError}
+                                    </p>
+                                  )}
+                                  <button
+                                    onClick={saveProduct}
+                                    disabled={isProcessingProductImage}
+                                    style={{
+                                      padding: "9px 22px",
+                                      background: isProcessingProductImage
+                                        ? "#94a3b8"
+                                        : ACCENT,
+                                      color: "#fff",
+                                      border: "none",
+                                      borderRadius: 8,
+                                      fontSize: 13.5,
+                                      fontWeight: 800,
+                                      cursor: isProcessingProductImage
+                                        ? "wait"
+                                        : "pointer",
+                                    }}
+                                  >
+                                    {isProcessingProductImage
+                                      ? "Processing photo…"
+                                      : "Save Changes"}
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </Fragment>
                       )
                     })}
                   </tbody>
