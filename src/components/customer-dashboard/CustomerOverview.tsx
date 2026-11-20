@@ -1,5 +1,6 @@
 import { ACCENT, DARK } from './constants'
 import type { CustomerStat, CustomerSection, CustomerWishlistItem, StoredOrder } from './types'
+import { CreditCard, Heart, Package, Star } from 'lucide-react'
 
 interface CustomerOverviewProps {
   customerName: string
@@ -27,7 +28,7 @@ export default function CustomerOverview({
         {stats.map(s => (
           <div key={s.label} style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 14, padding: '20px 22px' }}>
             <div style={{ width: 38, height: 38, background: s.color, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
-              <span style={{ fontSize: 18 }}>{s.label === 'Orders' ? '📦' : s.label === 'Total Spent' ? '💳' : s.label === 'Saved Items' ? '❤️' : '⭐'}</span>
+              {s.label === 'Orders' ? <Package size={18} /> : s.label === 'Total Spent' ? <CreditCard size={18} /> : s.label === 'Saved Items' ? <Heart size={18} /> : <Star size={18} />}
             </div>
             <div style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: 24, fontWeight: 800, color: DARK, marginBottom: 2 }}>{s.value}</div>
             <div style={{ fontSize: 13, fontWeight: 700, color: '#374151' }}>{s.label}</div>

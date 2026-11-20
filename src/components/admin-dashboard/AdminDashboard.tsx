@@ -1940,7 +1940,7 @@ export default function AdminDashboard({ onViewChange, authError }: Props) {
                               borderRadius: 10,
                             }}
                           >
-                            {c.status === "VIP" ? "✦ VIP" : "Active"}
+                            {c.status === "VIP" ? "VIP" : "Active"}
                           </span>
                         </td>
                         <td style={{ padding: "12px 16px" }}>

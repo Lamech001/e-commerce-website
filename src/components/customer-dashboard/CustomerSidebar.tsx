@@ -38,7 +38,7 @@ export default function CustomerSidebar({
           <div style={{ width: 40, height: 40, background: '#dbeafe', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 800, color: ACCENT, flexShrink: 0 }}>S</div>
           <div>
             <div style={{ fontSize: 13.5, fontWeight: 800, color: DARK }}>{profileName}</div>
-            <div style={{ fontSize: 11.5, color: '#d97706', fontWeight: 700 }}>✦ Gold Member</div>
+            <div style={{ fontSize: 11.5, color: '#d97706', fontWeight: 700 }}>Gold Member</div>
           </div>
         </div>
 

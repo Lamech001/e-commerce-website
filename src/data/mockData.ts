@@ -22,18 +22,18 @@ export interface Product {
 }
 
 export const navCategories = [
-  { id: 'all', label: 'All Products', icon: '🛍️' },
-  { id: 'new', label: 'New Arrivals', icon: '✨' },
-  { id: 'sale', label: 'Sale', icon: '🔥' },
-  { id: 'divider1', label: '', icon: '' },
-  { id: 'clothing', label: 'Clothing', icon: '👔' },
-  { id: 'shoes', label: 'Shoes', icon: '👟' },
-  { id: 'bags', label: 'Bags', icon: '👜' },
-  { id: 'accessories', label: 'Accessories', icon: '💍' },
-  { id: 'divider2', label: '', icon: '' },
-  { id: 'men', label: 'Men', icon: '♂️' },
-  { id: 'women', label: 'Women', icon: '♀️' },
-  { id: 'kids', label: 'Kids', icon: '🧒' },
+  { id: 'all', label: 'All Products' },
+  { id: 'new', label: 'New Arrivals' },
+  { id: 'sale', label: 'Sale' },
+  { id: 'divider1', label: '' },
+  { id: 'clothing', label: 'Clothing' },
+  { id: 'shoes', label: 'Shoes' },
+  { id: 'bags', label: 'Bags' },
+  { id: 'accessories', label: 'Accessories' },
+  { id: 'divider2', label: '' },
+  { id: 'men', label: 'Men' },
+  { id: 'women', label: 'Women' },
+  { id: 'kids', label: 'Kids' },
 ]
 
 export const products: Product[] = [

@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from "react"
+import friendsPhoto from "../assets/store-hero/friends.jpeg"
+import workwearPhoto from "../assets/store-hero/workwear.jpeg"
+import fashionPhoto from "../assets/store-hero/fashion.jpeg"
 import {
   Search,
   ShoppingCart,
   User,
   Heart,
   Star,
+  CircleCheck,
   X,
   ArrowRight,
   Truck,
@@ -39,6 +43,11 @@ interface LandingProps {
 
 const ACCENT = "#2563eb"
 const DARK = "#0f172a"
+const HERO_PHOTOS = [
+  { src: friendsPhoto, alt: "Friends wearing stylish outfits together" },
+  { src: workwearPhoto, alt: "Three models in fashionable workwear" },
+  { src: fashionPhoto, alt: "Models showcasing three elegant fashion looks" },
+]
 
 const describePromotion = (promotion: StorefrontPromotion) =>
   promotion.type === "percentage"
@@ -70,6 +79,7 @@ const getSavedCheckoutDetails = (): Record<string, string> => {
 }
 
 export default function Landing({ onViewChange }: LandingProps) {
+  const [heroPhotoIndex, setHeroPhotoIndex] = useState(0)
   const [search, setSearch] = useState("")
   const [activeCat, setActiveCat] = useState("all")
   const [sortBy, setSortBy] = useState("featured")
@@ -110,6 +120,19 @@ export default function Landing({ onViewChange }: LandingProps) {
     useState<StorefrontPromotion[]>([])
   const [promotionLoadError, setPromotionLoadError] = useState("")
   const [arePromotionsLoading, setArePromotionsLoading] = useState(true)
+
+  useEffect(() => {
+    for (const { src } of HERO_PHOTOS) {
+      const image = new Image()
+      image.src = src
+    }
+
+    const intervalId = window.setInterval(() => {
+      setHeroPhotoIndex((current) => (current + 1) % HERO_PHOTOS.length)
+    }, 2000)
+
+    return () => window.clearInterval(intervalId)
+  }, [])
 
   useEffect(() => {
     let active = true
@@ -498,7 +521,7 @@ export default function Landing({ onViewChange }: LandingProps) {
             animation: "fadeIn 0.25s ease",
           }}
         >
-          ✓ {toast}
+          {toast}
         </div>
       )}
 
@@ -863,7 +886,6 @@ export default function Landing({ onViewChange }: LandingProps) {
                       e.currentTarget.style.background = "transparent"
                   }}
                 >
-                  <span style={{ fontSize: 16 }}>{cat.icon}</span>
                   {cat.label}
                   {cat.id === "sale" && (
                     <span
@@ -1039,13 +1061,23 @@ export default function Landing({ onViewChange }: LandingProps) {
               }}
             >
               <img
-                src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=400&fit=crop&auto=format&crop=top"
-                alt="Summer Collection"
+                src={HERO_PHOTOS[heroPhotoIndex].src}
+                alt={HERO_PHOTOS[heroPhotoIndex].alt}
                 style={{
+                  position: "absolute",
+                  inset: 0,
                   width: "100%",
                   height: "100%",
                   objectFit: "cover",
-                  opacity: 0.45,
+                }}
+              />
+              <div
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "linear-gradient(90deg, rgba(15, 23, 42, 0.68), rgba(15, 23, 42, 0.12))",
                 }}
               />
               <div
@@ -1053,6 +1085,7 @@ export default function Landing({ onViewChange }: LandingProps) {
                 style={{
                   position: "absolute",
                   inset: 0,
+                  zIndex: 1,
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
@@ -1155,12 +1188,12 @@ export default function Landing({ onViewChange }: LandingProps) {
           >
             {[
               { id: "all", label: "All" },
-              { id: "new", label: "✨ New In" },
-              { id: "sale", label: "🔥 Sale" },
-              { id: "clothing", label: "👔 Clothing" },
-              { id: "shoes", label: "👟 Shoes" },
-              { id: "bags", label: "👜 Bags" },
-              { id: "accessories", label: "💍 Accessories" },
+              { id: "new", label: "New In" },
+              { id: "sale", label: "Sale" },
+              { id: "clothing", label: "Clothing" },
+              { id: "shoes", label: "Shoes" },
+              { id: "bags", label: "Bags" },
+              { id: "accessories", label: "Accessories" },
             ].map((c) => (
               <button
                 key={c.id}
@@ -1545,7 +1578,7 @@ export default function Landing({ onViewChange }: LandingProps) {
                     marginBottom: 20,
                   }}
                 >
-                  <span style={{ fontSize: 32 }}>✓</span>
+                  <CircleCheck size={34} color="#16a34a" aria-hidden="true" />
                 </div>
                 <h2
                   style={{
@@ -1900,7 +1933,7 @@ export default function Landing({ onViewChange }: LandingProps) {
                         margin: "10px 0 0",
                       }}
                     >
-                      🔒 Secure · 256-bit SSL encrypted
+                      Secure checkout · 256-bit SSL encrypted
                     </p>
                   </div>
                 )}
@@ -2074,7 +2107,7 @@ export default function Landing({ onViewChange }: LandingProps) {
                           marginBottom: 4,
                         }}
                       >
-                        💵 Pay on Delivery (Cash)
+                        Pay on Delivery (Cash)
                       </div>
                       <div
                         style={{
@@ -2369,7 +2402,7 @@ export default function Landing({ onViewChange }: LandingProps) {
                       margin: "8px 0 0",
                     }}
                   >
-                    💵 Pay in cash on delivery — no card needed
+                    Pay in cash on delivery — no card needed
                   </p>
                 </div>
               </>
@@ -2742,10 +2775,10 @@ export default function Landing({ onViewChange }: LandingProps) {
                 }}
               >
                 {quickView.stock === 0
-                  ? "✗ Out of stock"
+                  ? "Out of stock"
                   : quickView.stock < 15
-                    ? `⚡ Only ${quickView.stock} left in stock`
-                    : "✓ In stock — ships in 1–2 days"}
+                    ? `Only ${quickView.stock} left in stock`
+                    : "In stock — ships in 1–2 days"}
               </p>
             </div>
           </div>
