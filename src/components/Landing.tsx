@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
-import friendsPhoto from "../assets/store-hero/friends.jpeg"
-import workwearPhoto from "../assets/store-hero/workwear.jpeg"
-import fashionPhoto from "../assets/store-hero/fashion.jpeg"
+import friendsPhoto from "../assets/store-hero/friends.webp"
+import workwearPhoto from "../assets/store-hero/workwear.webp"
+import fashionPhoto from "../assets/store-hero/fashion.webp"
 import {
   Search,
   ShoppingCart,
