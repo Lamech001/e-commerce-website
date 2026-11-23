@@ -1156,21 +1156,26 @@ export default function Landing({ onViewChange }: LandingProps) {
                   >
                     Shop New Arrivals <ArrowRight size={15} />
                   </button>
-                  <button
-                    onClick={() => setActiveCat("sale")}
+                  <a
+                    href="https://wa.me/254705522682"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{
                       padding: "12px 26px",
-                      background: "transparent",
+                      background: "#25D366",
                       color: "#fff",
-                      border: "2px solid rgba(255,255,255,0.4)",
+                      border: "none",
                       borderRadius: 8,
                       fontSize: 14,
                       fontWeight: 600,
-                      cursor: "pointer",
+                      textDecoration: "none",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
                     }}
                   >
-                    View Sale
-                  </button>
+                    WhatsApp Us
+                  </a>
                 </div>
               </div>
             </div>
